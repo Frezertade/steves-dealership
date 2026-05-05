@@ -1,3 +1,5 @@
+import Script from 'next/script'
+
 export default function SchemaMarkup() {
   const dealershipSchema = {
     "@context": "https://schema.org",
@@ -43,7 +45,8 @@ export default function SchemaMarkup() {
   }
 
   return (
-    <script
+    <Script
+      id="schema-markup"
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(dealershipSchema) }}
     />
