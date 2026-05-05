@@ -9,6 +9,9 @@ export default function VehicleModal({ vehicle, onClose }) {
 
   // Focus trap and escape key handling
   useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') return
+    
     previousActiveElement.current = document.activeElement
     
     const handleEscape = (e) => {

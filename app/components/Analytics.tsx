@@ -18,7 +18,11 @@ export default function Analytics() {
     gtag('config', 'GA_MEASUREMENT_ID')
 
     return () => {
-      document.head.removeChild(script)
+      try {
+        document.head.removeChild(script)
+      } catch (e) {
+        // Script might already be removed
+      }
     }
   }, [])
 
