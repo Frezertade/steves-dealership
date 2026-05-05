@@ -20,13 +20,17 @@ export default function InventorySection() {
 
   // Load favorites from localStorage
   useEffect(() => {
-    const saved = localStorage.getItem('favorites')
-    if (saved) setFavorites(JSON.parse(saved))
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('favorites')
+      if (saved) setFavorites(JSON.parse(saved))
+    }
   }, [])
 
   // Save favorites to localStorage
   useEffect(() => {
-    localStorage.setItem('favorites', JSON.stringify(favorites))
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('favorites', JSON.stringify(favorites))
+    }
   }, [favorites])
 
   const toggleFavorite = useCallback((e, vehicleId) => {
