@@ -9,8 +9,8 @@ Branch: `wip/system-complete`. **Never `git push`.** Push happens once, after ev
 ## Status
 
 - current: none
-- completed: 10/12
-- last_completed: D10
+- completed: 11/12
+- last_completed: D11
 
 ## Backlog
 
@@ -24,7 +24,7 @@ Branch: `wip/system-complete`. **Never `git push`.** Push happens once, after ev
 - [x] **D08** Analytics from env. `Analytics.tsx` currently hardcodes `GA_MEASUREMENT_ID`. Load `NEXT_PUBLIC_GA_ID` and render nothing if unset. Done when: no placeholder GA id in the client bundle.
 - [x] **D09** Privacy and terms pages at `/privacy` and `/terms`, linked in the footer. Short, accurate (leads, optional AI chat, no sale of data). Done when: both routes build and footer links work.
 - [x] **D10** Financing + trade-in + compare still work after the above. Fix any broken `#financing` / compare-tray bugs you find. Done when: those three sections render and `npm run build` passes.
-- [ ] **D11** Product README. Replace the one-liner README with run, env, pages, and “do not push until TASKS.md is complete”. Done when: a stranger can run the dealer site from README.
+- [x] **D11** Product README. Replace the one-liner README with run, env, pages, and “do not push until TASKS.md is complete”. Done when: a stranger can run the dealer site from README.
 - [ ] **D12** Smoke tests. Add `scripts/smoke.mjs` that fails if TASKS still has `- [ ]`, if `next.config.js` still has `output: 'export'`, or if `/api/leads` / `/api/chat` files are missing. Add `npm run smoke`. Done when: `npm run smoke` and `npm run build` both pass.
 
 ## Done rule
