@@ -27,9 +27,17 @@ export function generateMetadata({ params }: PageProps): Metadata {
   }
 
   const label = `${vehicle.year} ${vehicle.make} ${vehicle.model}`
+  const description = `${label} — $${vehicle.price.toLocaleString()}, ${vehicle.mileage.toLocaleString()} miles. On the lot at ${BUSINESS.addressLine}.`
   return {
     title: `${label} | ${BUSINESS.name}`,
-    description: `${label} — $${vehicle.price.toLocaleString()}, ${vehicle.mileage.toLocaleString()} miles. On the lot at ${BUSINESS.addressLine}.`,
+    description,
+    openGraph: {
+      title: `${label} | ${BUSINESS.name}`,
+      description,
+      type: 'website',
+      url: `${BUSINESS.siteUrl}/inventory/${vehicle.id}`,
+      siteName: BUSINESS.name,
+    },
   }
 }
 

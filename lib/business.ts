@@ -2,6 +2,7 @@ export const BUSINESS = {
   name: "Steve's Dealership",
   shortName: "Steve's",
   foundedYear: 2007,
+  siteUrl: 'https://steves-dealership.vercel.app',
   phoneDisplay: '(717) 397-3497',
   phoneTel: '7173973497',
   email: 'stevesdealer@gmail.com',
