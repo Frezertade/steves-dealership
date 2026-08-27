@@ -4,7 +4,7 @@ Each Grok `/loop` fire does **one** task from `TASKS.md`, then stops.
 
 ## Pick
 
-1. If `.grok/builder.lock` exists and is younger than 25 minutes, exit: another run is working.
+1. If `.grok/builder.lock` exists and is younger than 25 minutes, exit immediately (`DEALER LOCKED`). Something is still shipping — do not wait, do not retry. The next 60s tick will pick up when the lock is gone.
 2. Write `.grok/builder.lock` with ISO time + task id.
 3. First markdown line matching `- [ ] **Dxx**` is the task. If none, the board is complete: delete the lock, do not push, report `DEALER COMPLETE — ready to push wip/system-complete`.
 
