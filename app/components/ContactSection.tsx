@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import { User, Phone, Mail, MessageSquare, Send, CheckCircle } from 'lucide-react'
 
+const LOT_PHONE = '(717) 397-3497'
+
 export default function ContactSection() {
   const [formData, setFormData] = useState({
     name: '',
@@ -11,11 +13,48 @@ export default function ContactSection() {
     message: '',
   })
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [error, setError] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsSubmitted(true)
-    // Here you would typically send the data to your backend
+
+    if (!formData.phone.trim()) {
+      setError('Please enter a phone number so we can reach you.')
+      return
+    }
+
+    if (!formData.name.trim()) {
+      setError('Please enter your name.')
+      return
+    }
+
+    setError('')
+    setIsSubmitting(true)
+
+    try {
+      const res = await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+      const data = await res.json().catch(() => ({}))
+
+      if (!res.ok) {
+        setError(
+          typeof data.error === 'string'
+            ? data.error
+            : `Could not send your request. Call ${LOT_PHONE}.`
+        )
+        return
+      }
+
+      setIsSubmitted(true)
+    } catch {
+      setError(`Could not send your request. Call ${LOT_PHONE}.`)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -38,7 +77,7 @@ export default function ContactSection() {
               <p className="text-green-700">We'll get back to you within 24 hours.</p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="bg-gray-50 rounded-2xl p-8">
+            <form onSubmit={handleSubmit} noValidate className="bg-gray-50 rounded-2xl p-8">
               <div className="grid md:grid-cols-2 gap-6 mb-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -48,7 +87,10 @@ export default function ContactSection() {
                     type="text"
                     required
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, name: e.target.value })
+                      setError('')
+                    }}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500"
                     placeholder="John Doe"
                   />
@@ -60,8 +102,12 @@ export default function ContactSection() {
                   <input
                     type="tel"
                     required
+                    aria-invalid={error.toLowerCase().includes('phone')}
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, phone: e.target.value })
+                      setError('')
+                    }}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500"
                     placeholder="(717) 555-0123"
                   />
@@ -94,12 +140,19 @@ export default function ContactSection() {
                 />
               </div>
 
+              {error ? (
+                <p className="text-red-600 text-sm font-medium mb-4" role="alert">
+                  {error}
+                </p>
+              ) : null}
+
               <button
                 type="submit"
-                className="w-full bg-primary-600 text-white py-4 rounded-xl font-semibold hover:bg-primary-700 transition-colors flex items-center justify-center gap-2"
+                disabled={isSubmitting}
+                className="w-full bg-primary-600 text-white py-4 rounded-xl font-semibold hover:bg-primary-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-60"
               >
                 <Send className="w-5 h-5" />
-                Send Message
+                {isSubmitting ? 'Sending…' : 'Send Message'}
               </button>
             </form>
           )}
