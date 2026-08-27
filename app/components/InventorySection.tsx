@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { Search, Filter, ChevronDown, Phone, Calendar, Fuel, Gauge, Heart, X, ChevronLeft, ChevronRight, SlidersHorizontal } from 'lucide-react'
+import Link from 'next/link'
+import { Search, Filter, ChevronDown, Fuel, Gauge, Heart, ChevronLeft, ChevronRight, SlidersHorizontal } from 'lucide-react'
 import { VEHICLES, CATEGORIES, PRICE_RANGES } from '../../lib/data'
 import VehicleModal from './VehicleModal'
 
@@ -246,7 +247,13 @@ export default function InventorySection() {
                     </div>
                     
                     <h3 className="font-bold text-lg text-gray-900 mb-2">
-                      {vehicle.make} {vehicle.model}
+                      <Link
+                        href={`/inventory/${vehicle.id}`}
+                        onClick={(e) => e.stopPropagation()}
+                        className="hover:text-primary-600"
+                      >
+                        {vehicle.make} {vehicle.model}
+                      </Link>
                     </h3>
                     
                     <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
@@ -266,9 +273,13 @@ export default function InventorySection() {
                           ${vehicle.price.toLocaleString()}
                         </span>
                       </div>
-                      <button className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors text-sm font-semibold">
+                      <Link
+                        href={`/inventory/${vehicle.id}`}
+                        onClick={(e) => e.stopPropagation()}
+                        className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors text-sm font-semibold"
+                      >
                         View Details
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 </div>

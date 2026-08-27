@@ -38,11 +38,11 @@ export default function Footer() {
             <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
             <ul className="space-y-2">
               {[
-                { label: 'Home', href: '#' },
-                { label: 'Inventory', href: '#inventory' },
-                { label: 'Financing', href: '#financing' },
-                { label: 'About', href: '#about' },
-                { label: 'Contact', href: '#contact' },
+                { label: 'Home', href: '/' },
+                { label: 'Inventory', href: '/#inventory' },
+                { label: 'Financing', href: '/#financing' },
+                { label: 'About', href: '/#about' },
+                { label: 'Contact', href: '/#contact' },
               ].map((link) => (
                 <li key={link.label}>
                   <a href={link.href} className="text-gray-400 hover:text-primary-400 transition-colors text-sm">
@@ -59,7 +59,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {['Sedans', 'SUVs', 'Trucks', 'Electric', 'Hybrid', 'Luxury'].map((type) => (
                 <li key={type}>
-                  <a href="#inventory" className="text-gray-400 hover:text-primary-400 transition-colors text-sm">
+                  <a href="/#inventory" className="text-gray-400 hover:text-primary-400 transition-colors text-sm">
                     {type}
                   </a>
                 </li>
