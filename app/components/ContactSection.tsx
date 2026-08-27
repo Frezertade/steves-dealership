@@ -13,6 +13,7 @@ export default function ContactSection() {
     message: '',
   })
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [delivered, setDelivered] = useState(false)
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -49,6 +50,7 @@ export default function ContactSection() {
         return
       }
 
+      setDelivered(Boolean(data.delivered))
       setIsSubmitted(true)
     } catch {
       setError(`Could not send your request. Call ${LOT_PHONE}.`)
@@ -73,8 +75,14 @@ export default function ContactSection() {
           {isSubmitted ? (
             <div className="bg-green-50 border border-green-200 rounded-2xl p-8 text-center">
               <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-green-800 mb-2">Thank You!</h3>
-              <p className="text-green-700">We'll get back to you within 24 hours.</p>
+              <h3 className="text-2xl font-bold text-green-800 mb-2">
+                {delivered ? 'Message sent' : 'Request recorded'}
+              </h3>
+              <p className="text-green-700">
+                {delivered
+                  ? 'The lot received your note. We will call you back.'
+                  : `Your request was recorded. For fastest follow-up, call ${LOT_PHONE}.`}
+              </p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} noValidate className="bg-gray-50 rounded-2xl p-8">

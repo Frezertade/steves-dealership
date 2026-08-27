@@ -1,11 +1,13 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { NextResponse } from 'next/server'
+import { fieldsToHtml, sendTransactionalEmail } from '../../../lib/mail'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 type Lead = {
+  id: string
   name: string
   phone: string
   email?: string
@@ -18,56 +20,57 @@ function asString(value: unknown) {
 }
 
 async function persistLead(lead: Lead) {
-  const dataDir = path.join(process.cwd(), 'data')
-  const filePath = path.join(dataDir, 'leads.json')
-  await mkdir(dataDir, { recursive: true })
+  const candidates = [
+    path.join(process.cwd(), 'data', 'leads.json'),
+    path.join('/tmp', 'steves-leads.json'),
+  ]
 
-  let existing: Lead[] = []
-  try {
-    const raw = await readFile(filePath, 'utf8')
-    const parsed = JSON.parse(raw)
-    if (Array.isArray(parsed)) existing = parsed
-  } catch {
-    existing = []
+  for (const filePath of candidates) {
+    try {
+      await mkdir(path.dirname(filePath), { recursive: true })
+      let existing: Lead[] = []
+      try {
+        const raw = await readFile(filePath, 'utf8')
+        const parsed = JSON.parse(raw)
+        if (Array.isArray(parsed)) existing = parsed
+      } catch {
+        existing = []
+      }
+      existing.push(lead)
+      await writeFile(filePath, JSON.stringify(existing, null, 2))
+      return true
+    } catch (error) {
+      console.error(`[leads] persist failed at ${filePath}`, error)
+    }
   }
 
-  existing.push(lead)
-  await writeFile(filePath, JSON.stringify(existing, null, 2))
+  return false
 }
 
 async function emailLead(lead: Lead) {
-  const apiKey = process.env.RESEND_API_KEY
-  if (!apiKey) return false
+  const rows: Array<[string, string]> = [
+    ['Name', lead.name],
+    ['Phone', lead.phone],
+    ['Email', lead.email || 'Not provided'],
+    ['Message', lead.message || 'Not provided'],
+    ['Received', lead.createdAt],
+    ['ID', lead.id],
+  ]
+  const text = [
+    'New sales lead from Steve\'s Dealership',
+    '',
+    ...rows.map(([label, value]) => `${label}: ${value}`),
+    '',
+    'Call the customer at the number above.',
+  ].join('\n')
 
-  const inbox = process.env.LEAD_INBOX || 'stevesdealer@gmail.com'
-  const res = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      from: "Steve's Dealership <beth.t@example.com>",
-      to: [inbox],
-      subject: `New sales lead from ${lead.name}`,
-      text: [
-        'New sales lead from stevesdealership.com',
-        '',
-        `Name: ${lead.name}`,
-        `Phone: ${lead.phone}`,
-        `Email: ${lead.email || 'Not provided'}`,
-        `Message: ${lead.message || 'Not provided'}`,
-        `Received: ${lead.createdAt}`,
-      ].join('\n'),
-    }),
+  return sendTransactionalEmail({
+    subject: `New sales lead from ${lead.name}`,
+    text,
+    html: fieldsToHtml('New sales lead', rows),
+    replyTo: lead.email,
+    idempotencyKey: `dealer-lead-${lead.id}`,
   })
-
-  if (!res.ok) {
-    console.error('[leads] resend failed', await res.text())
-    return false
-  }
-
-  return true
 }
 
 export async function POST(req: Request) {
@@ -89,6 +92,7 @@ export async function POST(req: Request) {
   }
 
   const lead: Lead = {
+    id: crypto.randomUUID(),
     name,
     phone,
     createdAt: new Date().toISOString(),
@@ -96,16 +100,9 @@ export async function POST(req: Request) {
   if (email) lead.email = email
   if (message) lead.message = message
 
-  console.log('[leads]', lead)
+  console.log('[leads]', { id: lead.id, name: lead.name, phone: lead.phone })
 
-  let saved = false
-  try {
-    await persistLead(lead)
-    saved = true
-  } catch (err) {
-    console.error('[leads] persist failed', err)
-  }
-
+  const saved = await persistLead(lead)
   let delivered = false
   try {
     delivered = await emailLead(lead)
@@ -113,5 +110,5 @@ export async function POST(req: Request) {
     console.error('[leads] resend error', err)
   }
 
-  return NextResponse.json({ ok: true, saved, delivered }, { status: 200 })
+  return NextResponse.json({ ok: true, id: lead.id, saved, delivered }, { status: 200 })
 }

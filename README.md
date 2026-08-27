@@ -4,7 +4,7 @@ Independent used-car lot site for **Steve's Dealership** in Lancaster, PA. Inven
 
 This is **not** a luxury franchise and **not** the repair-shop site. Same lot as the shop: **1027 Dillerville Rd #16, Lancaster, PA 17603**. Phone `(717) 397-3497`. Email `stevesdealer@gmail.com`.
 
-**Do not push until `TASKS.md` is complete.** Work stays on `wip/system-complete`. Push happens once, after every task is `[x]`.
+Work lives on `wip/system-complete`. After merge, set `RESEND_API_KEY` on Vercel so sales leads email `stevesdealer@gmail.com`.
 
 ## Run
 
@@ -38,8 +38,9 @@ Defined in `.env.example`:
 | Variable | Required? | Purpose |
 | --- | --- | --- |
 | `OPENAI_API_KEY` | No | Sales chatbot. If unset, `POST /api/chat` answers from lot inventory + hours + phone and never invents a VIN. |
-| `RESEND_API_KEY` | No | Email new leads. If unset, leads are still logged and written to `data/leads.json` when the filesystem allows. |
+| `RESEND_API_KEY` | No for local, **yes in production** | Emails new leads via Resend. If unset, `delivered` is `false` and the UI tells the visitor to call. |
 | `LEAD_INBOX` | No | Lead email destination. Defaults to `stevesdealer@gmail.com`. |
+| `LEAD_FROM` | No | Resend `from` address. Defaults to `Steve's Dealership <onboarding@resend.dev>` until a domain is verified. |
 | `NEXT_PUBLIC_GA_ID` | No | Google Analytics. Analytics script is omitted when this is empty. |
 
 ## Pages
@@ -74,5 +75,4 @@ Hours, address, and contact copy live in `lib/business.ts`. Lot cars live in `li
 ## Branch / push
 
 - Branch: `wip/system-complete`
-- **Do not push until `TASKS.md` is complete.**
-- Builder loop: one `TASKS.md` item per fire (`LOOP.md`). Never `git push` from a builder.
+- After merge: add `RESEND_API_KEY` (and optionally a verified `LEAD_FROM`) on the Vercel project.
