@@ -13,6 +13,7 @@ export default function Navigation({ solid = false }: { solid?: boolean }) {
     { label: 'Home', href: solid ? '/' : '#' },
     { label: 'Inventory', href: solid ? '/#inventory' : '#inventory' },
     { label: 'Financing', href: solid ? '/#financing' : '#financing' },
+    { label: 'Trade-In', href: solid ? '/#trade-in' : '#trade-in' },
     { label: 'About', href: solid ? '/#about' : '#about' },
     { label: 'Contact', href: solid ? '/#contact' : '#contact' },
   ]

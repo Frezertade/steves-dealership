@@ -58,7 +58,7 @@ export default function ContactSection() {
   }
 
   return (
-    <section id="contact" className="section-padding bg-white">
+    <section id="contact" className="section-padding bg-white scroll-mt-24">
       <div className="container-custom">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">

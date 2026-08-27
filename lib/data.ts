@@ -193,6 +193,8 @@ export const VEHICLES = [
   },
 ]
 
+export type Vehicle = (typeof VEHICLES)[number]
+
 export const CATEGORIES = ['All', 'Sedan', 'SUV', 'Truck', 'Hybrid']
 
 export const PRICE_RANGES = [

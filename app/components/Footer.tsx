@@ -41,6 +41,7 @@ export default function Footer() {
                 { label: 'Home', href: '/' },
                 { label: 'Inventory', href: '/#inventory' },
                 { label: 'Financing', href: '/#financing' },
+                { label: 'Trade-In', href: '/#trade-in' },
                 { label: 'About', href: '/#about' },
                 { label: 'Contact', href: '/#contact' },
               ].map((link) => (

@@ -3,7 +3,7 @@ import { BUSINESS } from '@/lib/business'
 
 export default function AboutSection() {
   return (
-    <section id="about" className="section-padding bg-slate-50">
+    <section id="about" className="section-padding bg-slate-50 scroll-mt-24">
       <div className="container-custom">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">

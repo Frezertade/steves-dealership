@@ -10,6 +10,7 @@ import Footer from './components/Footer'
 import ChatBot from './components/ChatBot'
 import SchemaMarkup from './components/SchemaMarkup'
 import Analytics from './components/Analytics'
+import { CompareProvider } from './components/CompareProvider'
 
 export default function Home() {
   return (
@@ -18,10 +19,12 @@ export default function Home() {
       <Analytics />
       <Navigation />
       <Hero />
-      <InventorySection />
-      <FinancingCalculator />
-      <TradeInEstimator />
-      <VehicleComparison />
+      <CompareProvider>
+        <InventorySection />
+        <FinancingCalculator />
+        <TradeInEstimator />
+        <VehicleComparison />
+      </CompareProvider>
       <AboutSection />
       <ContactSection />
       <Footer />

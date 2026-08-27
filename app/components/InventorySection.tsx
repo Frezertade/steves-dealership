@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Search, Filter, ChevronDown, Fuel, Gauge, Heart, ChevronLeft, ChevronRight, SlidersHorizontal } from 'lucide-react'
 import { VEHICLES, CATEGORIES, PRICE_RANGES } from '../../lib/data'
 import VehicleModal from './VehicleModal'
+import { useCompare } from './CompareProvider'
 
 export default function InventorySection() {
   const [selectedCategory, setSelectedCategory] = useState('All')
@@ -16,6 +17,7 @@ export default function InventorySection() {
   const [isLoading, setIsLoading] = useState(false)
   const [showFilters, setShowFilters] = useState(false)
   const [sortBy, setSortBy] = useState('featured')
+  const { toggle: toggleCompare, isSelected, max: maxCompare, selected } = useCompare()
 
   const ITEMS_PER_PAGE = 6
 
@@ -87,7 +89,7 @@ export default function InventorySection() {
   }, [selectedCategory, searchQuery, priceRange])
 
   return (
-    <section id="inventory" className="section-padding bg-gray-50">
+    <section id="inventory" className="section-padding bg-gray-50 scroll-mt-24">
       <div className="container-custom">
         {/* Header */}
         <div className="text-center mb-12">
@@ -278,11 +280,16 @@ export default function InventorySection() {
                           type="button"
                           onClick={(e) => {
                             e.stopPropagation()
-                            window.dispatchEvent(new CustomEvent('steves-compare-add', { detail: { id: vehicle.id } }))
+                            toggleCompare(vehicle)
                           }}
-                          className="border border-gray-200 px-3 py-2 rounded-lg hover:border-primary-500 text-sm font-semibold text-gray-700"
+                          disabled={!isSelected(vehicle.id) && selected.length >= maxCompare}
+                          className={`px-3 py-2 rounded-lg text-sm font-semibold border transition-colors ${
+                            isSelected(vehicle.id)
+                              ? 'border-accent-500 bg-accent-50 text-accent-700'
+                              : 'border-gray-200 text-gray-700 hover:border-primary-500 hover:text-primary-600 disabled:opacity-40 disabled:cursor-not-allowed'
+                          }`}
                         >
-                          Compare
+                          {isSelected(vehicle.id) ? 'In compare' : 'Compare'}
                         </button>
                         <Link
                           href={`/inventory/${vehicle.id}`}
