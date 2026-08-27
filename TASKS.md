@@ -9,8 +9,8 @@ Branch: `wip/system-complete`. **Never `git push`.** Push happens once, after ev
 ## Status
 
 - current: none
-- completed: 8/12
-- last_completed: D08
+- completed: 9/12
+- last_completed: D09
 
 ## Backlog
 
@@ -22,7 +22,7 @@ Branch: `wip/system-complete`. **Never `git push`.** Push happens once, after ev
 - [x] **D06** Vehicle detail pages. Add `app/inventory/[id]/page.tsx` with price, miles, features, CTA call + lead form. Inventory cards link here as well as the modal. Done when: `/inventory/1` builds and shows a real vehicle.
 - [x] **D07** SEO + honest claims. Add `app/sitemap.ts` and `app/robots.ts`. Remove “#1 Rated Used Car Dealer in Lancaster” from the hero. Add Open Graph title/description. Done when: `/sitemap.xml` and `/robots.txt` exist after build and the unverifiable #1 claim is gone.
 - [x] **D08** Analytics from env. `Analytics.tsx` currently hardcodes `GA_MEASUREMENT_ID`. Load `NEXT_PUBLIC_GA_ID` and render nothing if unset. Done when: no placeholder GA id in the client bundle.
-- [ ] **D09** Privacy and terms pages at `/privacy` and `/terms`, linked in the footer. Short, accurate (leads, optional AI chat, no sale of data). Done when: both routes build and footer links work.
+- [x] **D09** Privacy and terms pages at `/privacy` and `/terms`, linked in the footer. Short, accurate (leads, optional AI chat, no sale of data). Done when: both routes build and footer links work.
 - [ ] **D10** Financing + trade-in + compare still work after the above. Fix any broken `#financing` / compare-tray bugs you find. Done when: those three sections render and `npm run build` passes.
 - [ ] **D11** Product README. Replace the one-liner README with run, env, pages, and “do not push until TASKS.md is complete”. Done when: a stranger can run the dealer site from README.
 - [ ] **D12** Smoke tests. Add `scripts/smoke.mjs` that fails if TASKS still has `- [ ]`, if `next.config.js` still has `output: 'export'`, or if `/api/leads` / `/api/chat` files are missing. Add `npm run smoke`. Done when: `npm run smoke` and `npm run build` both pass.

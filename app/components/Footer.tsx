@@ -110,6 +110,14 @@ export default function Footer() {
           <p className="text-gray-500 text-sm">
             © {new Date().getFullYear()} Steve's Dealership. All rights reserved.
           </p>
+          <nav className="flex items-center gap-4 text-sm" aria-label="Legal">
+            <a href="/privacy" className="text-gray-500 hover:text-primary-400 transition-colors">
+              Privacy
+            </a>
+            <a href="/terms" className="text-gray-500 hover:text-primary-400 transition-colors">
+              Terms
+            </a>
+          </nav>
           <p className="text-gray-500 text-sm">
             Built by <a href="https://aetherisinnovations.com" target="_blank" rel="noopener noreferrer" className="text-primary-400 hover:text-primary-300 transition-colors">Aetheris Innovations</a> — AI-Powered Business Solutions
           </p>
