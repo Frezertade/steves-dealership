@@ -267,19 +267,31 @@ export default function InventorySection() {
                       </span>
                     </div>
 
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-2">
                       <div>
                         <span className="text-2xl font-bold text-primary-600">
                           ${vehicle.price.toLocaleString()}
                         </span>
                       </div>
-                      <Link
-                        href={`/inventory/${vehicle.id}`}
-                        onClick={(e) => e.stopPropagation()}
-                        className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors text-sm font-semibold"
-                      >
-                        View Details
-                      </Link>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            window.dispatchEvent(new CustomEvent('steves-compare-add', { detail: { id: vehicle.id } }))
+                          }}
+                          className="border border-gray-200 px-3 py-2 rounded-lg hover:border-primary-500 text-sm font-semibold text-gray-700"
+                        >
+                          Compare
+                        </button>
+                        <Link
+                          href={`/inventory/${vehicle.id}`}
+                          onClick={(e) => e.stopPropagation()}
+                          className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors text-sm font-semibold"
+                        >
+                          View Details
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </div>

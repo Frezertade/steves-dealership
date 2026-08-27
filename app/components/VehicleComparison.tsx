@@ -1,12 +1,28 @@
 'use client'
 
-import { useState } from 'react'
-import { Car, ArrowRight, ArrowLeft, Check, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Car, X } from 'lucide-react'
 import { VEHICLES } from '../../lib/data'
 
 export default function VehicleComparison() {
   const [selectedVehicles, setSelectedVehicles] = useState([])
   const [isOpen, setIsOpen] = useState(false)
+
+  useEffect(() => {
+    const onAdd = (event: Event) => {
+      const id = Number((event as CustomEvent).detail?.id)
+      const vehicle = VEHICLES.find((item) => item.id === id)
+      if (!vehicle) return
+      setSelectedVehicles((prev) => {
+        if (prev.find((item) => item.id === vehicle.id)) return prev
+        if (prev.length >= 3) return prev
+        return [...prev, vehicle]
+      })
+      setIsOpen(true)
+    }
+    window.addEventListener('steves-compare-add', onAdd)
+    return () => window.removeEventListener('steves-compare-add', onAdd)
+  }, [])
 
   const toggleVehicle = (vehicle) => {
     if (selectedVehicles.find(v => v.id === vehicle.id)) {
