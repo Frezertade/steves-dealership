@@ -9,8 +9,8 @@ Branch: `wip/system-complete`. **Never `git push`.** Push happens once, after ev
 ## Status
 
 - current: none
-- completed: 4/12
-- last_completed: D04
+- completed: 5/12
+- last_completed: D05
 
 ## Backlog
 
@@ -18,7 +18,7 @@ Branch: `wip/system-complete`. **Never `git push`.** Push happens once, after ev
 - [x] **D02** Lead capture for sales. Add `POST /api/leads` that validates name + phone, logs the payload, writes `data/leads.json` when possible, and emails via Resend only if `RESEND_API_KEY` is set. Wire `ContactSection` to this API (no fake thank-you). Done when: a curl POST with JSON returns 200 and the form shows an error on missing phone.
 - [x] **D03** Working sales chatbot. Change `/api/chat` to return JSON `{ text }` (the UI already expects that). If `OPENAI_API_KEY` is missing, answer from inventory + hours + phone without calling OpenAI. System prompt: Steve's Dealership, Lancaster, help find cars, financing, test drives; never invent a VIN or a car not in `lib/data.ts`. Done when: POST `/api/chat` returns JSON and the widget does not 404.
 - [x] **D04** About + hours + location. Add an `#about` section (nav already links there). Include since 2007, independent lot, address, Mon–Sat hours that you document in one source of truth (`lib/business.ts`), map link. Do not claim “#1 rated”. Done when: `#about` exists and nav/footer use the shared business constants.
-- [ ] **D05** Honest Lancaster lot inventory. Replace the Tesla/BMW/Mercedes-as-typical mix in `lib/data.ts` with 10–12 independent-lot cars (Honda, Toyota, Ford, Chevy, Nissan, Hyundai, Jeep, plus at least one Prius/hybrid). Prices roughly $9,900–$24,900. Keep Unsplash images if needed but match make/body style. Search/filter must still work. Done when: no Tesla/BMW/Mercedes as the default featured mix and InventorySection still renders.
+- [x] **D05** Honest Lancaster lot inventory. Replace the Tesla/BMW/Mercedes-as-typical mix in `lib/data.ts` with 10–12 independent-lot cars (Honda, Toyota, Ford, Chevy, Nissan, Hyundai, Jeep, plus at least one Prius/hybrid). Prices roughly $9,900–$24,900. Keep Unsplash images if needed but match make/body style. Search/filter must still work. Done when: no Tesla/BMW/Mercedes as the default featured mix and InventorySection still renders.
 - [ ] **D06** Vehicle detail pages. Add `app/inventory/[id]/page.tsx` with price, miles, features, CTA call + lead form. Inventory cards link here as well as the modal. Done when: `/inventory/1` builds and shows a real vehicle.
 - [ ] **D07** SEO + honest claims. Add `app/sitemap.ts` and `app/robots.ts`. Remove “#1 Rated Used Car Dealer in Lancaster” from the hero. Add Open Graph title/description. Done when: `/sitemap.xml` and `/robots.txt` exist after build and the unverifiable #1 claim is gone.
 - [ ] **D08** Analytics from env. `Analytics.tsx` currently hardcodes `GA_MEASUREMENT_ID`. Load `NEXT_PUBLIC_GA_ID` and render nothing if unset. Done when: no placeholder GA id in the client bundle.
