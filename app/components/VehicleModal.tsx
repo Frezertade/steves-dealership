@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { Phone, Calendar, X, Heart, Fuel, Gauge, Settings, Check } from 'lucide-react'
+import Link from 'next/link'
+import { Phone, Calendar, X, Check } from 'lucide-react'
 
 export default function VehicleModal({ vehicle, onClose }) {
   const modalRef = useRef(null)
@@ -145,7 +146,7 @@ export default function VehicleModal({ vehicle, onClose }) {
           )}
           
           {/* CTA Buttons */}
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <a
               href="tel:7173973497"
               className="flex-1 flex items-center justify-center gap-2 bg-primary-600 text-white py-4 rounded-xl hover:bg-primary-700 transition-colors font-semibold"
@@ -162,6 +163,13 @@ export default function VehicleModal({ vehicle, onClose }) {
               Schedule Test Drive
             </a>
           </div>
+          <Link
+            href={`/inventory/${vehicle.id}`}
+            onClick={() => onClose()}
+            className="mt-3 block text-center text-sm font-semibold text-primary-600 hover:text-primary-700"
+          >
+            Open full listing
+          </Link>
         </div>
       </div>
     </div>

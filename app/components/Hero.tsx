@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Search, ChevronRight, Phone, Shield, DollarSign, Clock, Award } from 'lucide-react'
+import { Search, ChevronRight, Shield, DollarSign, Clock, Award } from 'lucide-react'
+import { BUSINESS } from '@/lib/business'
 
 export default function Hero() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -21,7 +22,9 @@ export default function Hero() {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-8">
             <Award className="w-4 h-4 text-accent-400" />
-            <span className="text-white/90 text-sm font-medium">#1 Rated Used Car Dealer in Lancaster</span>
+            <span className="text-white/90 text-sm font-medium">
+              Independent used cars in {BUSINESS.city} since {BUSINESS.foundedYear}
+            </span>
           </div>
 
           {/* Heading */}

@@ -1,9 +1,11 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { Search, Filter, ChevronDown, Phone, Calendar, Fuel, Gauge, Heart, X, ChevronLeft, ChevronRight, SlidersHorizontal } from 'lucide-react'
+import Link from 'next/link'
+import { Search, Filter, ChevronDown, Fuel, Gauge, Heart, ChevronLeft, ChevronRight, SlidersHorizontal } from 'lucide-react'
 import { VEHICLES, CATEGORIES, PRICE_RANGES } from '../../lib/data'
 import VehicleModal from './VehicleModal'
+import { useCompare } from './CompareProvider'
 
 export default function InventorySection() {
   const [selectedCategory, setSelectedCategory] = useState('All')
@@ -15,6 +17,7 @@ export default function InventorySection() {
   const [isLoading, setIsLoading] = useState(false)
   const [showFilters, setShowFilters] = useState(false)
   const [sortBy, setSortBy] = useState('featured')
+  const { toggle: toggleCompare, isSelected, max: maxCompare, selected } = useCompare()
 
   const ITEMS_PER_PAGE = 6
 
@@ -86,7 +89,7 @@ export default function InventorySection() {
   }, [selectedCategory, searchQuery, priceRange])
 
   return (
-    <section id="inventory" className="section-padding bg-gray-50">
+    <section id="inventory" className="section-padding bg-gray-50 scroll-mt-24">
       <div className="container-custom">
         {/* Header */}
         <div className="text-center mb-12">
@@ -246,7 +249,13 @@ export default function InventorySection() {
                     </div>
                     
                     <h3 className="font-bold text-lg text-gray-900 mb-2">
-                      {vehicle.make} {vehicle.model}
+                      <Link
+                        href={`/inventory/${vehicle.id}`}
+                        onClick={(e) => e.stopPropagation()}
+                        className="hover:text-primary-600"
+                      >
+                        {vehicle.make} {vehicle.model}
+                      </Link>
                     </h3>
                     
                     <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
@@ -260,15 +269,36 @@ export default function InventorySection() {
                       </span>
                     </div>
 
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-2">
                       <div>
                         <span className="text-2xl font-bold text-primary-600">
                           ${vehicle.price.toLocaleString()}
                         </span>
                       </div>
-                      <button className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors text-sm font-semibold">
-                        View Details
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            toggleCompare(vehicle)
+                          }}
+                          disabled={!isSelected(vehicle.id) && selected.length >= maxCompare}
+                          className={`px-3 py-2 rounded-lg text-sm font-semibold border transition-colors ${
+                            isSelected(vehicle.id)
+                              ? 'border-accent-500 bg-accent-50 text-accent-700'
+                              : 'border-gray-200 text-gray-700 hover:border-primary-500 hover:text-primary-600 disabled:opacity-40 disabled:cursor-not-allowed'
+                          }`}
+                        >
+                          {isSelected(vehicle.id) ? 'In compare' : 'Compare'}
+                        </button>
+                        <Link
+                          href={`/inventory/${vehicle.id}`}
+                          onClick={(e) => e.stopPropagation()}
+                          className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors text-sm font-semibold"
+                        >
+                          View Details
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </div>

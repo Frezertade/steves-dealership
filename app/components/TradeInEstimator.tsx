@@ -1,45 +1,48 @@
 'use client'
 
 import { useState } from 'react'
-import { Calculator, DollarSign, Percent, Clock, ChevronDown, Car, Gauge, Calendar, Info } from 'lucide-react'
+import { Car, Gauge } from 'lucide-react'
+
+const BASE_VALUES = {
+  Toyota: { Camry: 18000, RAV4: 20000, Highlander: 25000 },
+  Honda: { Accord: 17000, 'CR-V': 19000, Civic: 15000 },
+  Ford: { 'F-150': 22000, Escape: 16000, Explorer: 21000 },
+  Chevrolet: { Silverado: 21000, Equinox: 15000, Malibu: 14000 },
+} as const
+
+const CONDITION_MULTIPLIERS = {
+  excellent: 1.1,
+  good: 1.0,
+  fair: 0.85,
+  poor: 0.7,
+} as const
+
+type Make = keyof typeof BASE_VALUES
+type Condition = keyof typeof CONDITION_MULTIPLIERS
 
 export default function TradeInEstimator() {
   const [year, setYear] = useState(2018)
-  const [make, setMake] = useState('Toyota')
+  const [make, setMake] = useState<Make>('Toyota')
   const [model, setModel] = useState('Camry')
   const [mileage, setMileage] = useState(60000)
-  const [condition, setCondition] = useState('good')
+  const [condition, setCondition] = useState<Condition>('good')
   const [showEstimate, setShowEstimate] = useState(false)
 
-  // Simple estimation logic (in reality, this would call an API)
-  const baseValues = {
-    'Toyota': { 'Camry': 18000, 'RAV4': 20000, 'Highlander': 25000 },
-    'Honda': { 'Accord': 17000, 'CR-V': 19000, 'Civic': 15000 },
-    'Ford': { 'F-150': 22000, 'Escape': 16000, 'Explorer': 21000 },
-    'Chevrolet': { 'Silverado': 21000, 'Equinox': 15000, 'Malibu': 14000 },
-  }
-
-  const conditionMultipliers = {
-    excellent: 1.1,
-    good: 1.0,
-    fair: 0.85,
-    poor: 0.7,
-  }
+  const modelsForMake = Object.keys(BASE_VALUES[make]) as string[]
 
   const calculateEstimate = () => {
-    const baseValue = baseValues[make]?.[model] || 15000
+    const models = BASE_VALUES[make] as Record<string, number>
+    const baseValue = models[model] ?? 15000
     const age = new Date().getFullYear() - year
     const mileageAdjustment = Math.max(0.5, 1 - (mileage / 200000))
     const ageAdjustment = Math.max(0.3, 1 - (age * 0.05))
-    const conditionMultiplier = conditionMultipliers[condition]
-    
-    return Math.round(baseValue * mileageAdjustment * ageAdjustment * conditionMultiplier)
+    return Math.round(baseValue * mileageAdjustment * ageAdjustment * CONDITION_MULTIPLIERS[condition])
   }
 
   const estimate = calculateEstimate()
 
   return (
-    <section id="trade-in" className="section-padding bg-gray-50">
+    <section id="trade-in" className="section-padding bg-gray-50 scroll-mt-24">
       <div className="container-custom">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
@@ -79,10 +82,15 @@ export default function TradeInEstimator() {
                 </label>
                 <select
                   value={make}
-                  onChange={(e) => setMake(e.target.value)}
+                  onChange={(e) => {
+                    const nextMake = e.target.value as Make
+                    setMake(nextMake)
+                    const nextModels = Object.keys(BASE_VALUES[nextMake])
+                    setModel(nextModels[0] || '')
+                  }}
                   className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 appearance-none bg-white"
                 >
-                  {Object.keys(baseValues).map(m => (
+                  {(Object.keys(BASE_VALUES) as Make[]).map((m) => (
                     <option key={m} value={m}>{m}</option>
                   ))}
                 </select>
@@ -97,7 +105,7 @@ export default function TradeInEstimator() {
                   onChange={(e) => setModel(e.target.value)}
                   className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 appearance-none bg-white"
                 >
-                  {baseValues[make] && Object.keys(baseValues[make]).map(m => (
+                  {modelsForMake.map((m) => (
                     <option key={m} value={m}>{m}</option>
                   ))}
                 </select>
@@ -132,7 +140,8 @@ export default function TradeInEstimator() {
                 ].map((cond) => (
                   <button
                     key={cond.value}
-                    onClick={() => setCondition(cond.value)}
+                    type="button"
+                    onClick={() => setCondition(cond.value as Condition)}
                     className={`p-4 rounded-xl border-2 transition-all ${
                       condition === cond.value
                         ? 'border-primary-600 bg-primary-50'
@@ -149,6 +158,7 @@ export default function TradeInEstimator() {
             </div>
 
             <button
+              type="button"
               onClick={() => setShowEstimate(true)}
               className="w-full bg-primary-600 text-white py-4 rounded-xl font-semibold hover:bg-primary-700 transition-colors"
             >
@@ -173,6 +183,7 @@ export default function TradeInEstimator() {
                     Schedule Appraisal
                   </a>
                   <button
+                    type="button"
                     onClick={() => setShowEstimate(false)}
                     className="flex-1 border border-gray-200 text-gray-700 py-3 rounded-xl font-semibold hover:bg-gray-50 transition-colors"
                   >
