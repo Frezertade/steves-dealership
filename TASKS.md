@@ -9,12 +9,12 @@ Branch: `wip/system-complete`. **Never `git push`.** Push happens once, after ev
 ## Status
 
 - current: none
-- completed: 0/12
-- last_completed: none
+- completed: 1/12
+- last_completed: D01
 
 ## Backlog
 
-- [ ] **D01** Turn this into a real Next.js server app (APIs cannot run on `output: 'export'`). Remove `output: 'export'` from `next.config.js`. Add `.env.example` with `OPENAI_API_KEY`, `RESEND_API_KEY`, `LEAD_INBOX=stevesdealer@gmail.com`, `NEXT_PUBLIC_GA_ID`. Gitignore `.env`, `.env.local`, `data/leads.json`, `.grok/builder.lock`. Keep images unoptimized or add `images.remotePatterns` for Unsplash. Done when: `npm run build` succeeds and `app/api/` is part of a non-static build.
+- [x] **D01** Turn this into a real Next.js server app (APIs cannot run on `output: 'export'`). Remove `output: 'export'` from `next.config.js`. Add `.env.example` with `OPENAI_API_KEY`, `RESEND_API_KEY`, `LEAD_INBOX=stevesdealer@gmail.com`, `NEXT_PUBLIC_GA_ID`. Gitignore `.env`, `.env.local`, `data/leads.json`, `.grok/builder.lock`. Keep images unoptimized or add `images.remotePatterns` for Unsplash. Done when: `npm run build` succeeds and `app/api/` is part of a non-static build.
 - [ ] **D02** Lead capture for sales. Add `POST /api/leads` that validates name + phone, logs the payload, writes `data/leads.json` when possible, and emails via Resend only if `RESEND_API_KEY` is set. Wire `ContactSection` to this API (no fake thank-you). Done when: a curl POST with JSON returns 200 and the form shows an error on missing phone.
 - [ ] **D03** Working sales chatbot. Change `/api/chat` to return JSON `{ text }` (the UI already expects that). If `OPENAI_API_KEY` is missing, answer from inventory + hours + phone without calling OpenAI. System prompt: Steve's Dealership, Lancaster, help find cars, financing, test drives; never invent a VIN or a car not in `lib/data.ts`. Done when: POST `/api/chat` returns JSON and the widget does not 404.
 - [ ] **D04** About + hours + location. Add an `#about` section (nav already links there). Include since 2007, independent lot, address, Mon–Sat hours that you document in one source of truth (`lib/business.ts`), map link. Do not claim “#1 rated”. Done when: `#about` exists and nav/footer use the shared business constants.
