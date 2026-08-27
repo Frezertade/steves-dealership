@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Menu, X, Phone, Car } from 'lucide-react'
+import { BUSINESS } from '@/lib/business'
 
 const navLinks = [
   { label: 'Home', href: '#' },
@@ -65,7 +66,7 @@ export default function Navigation() {
                 </a>
               ))}
               <a
-                href="tel:7173973497"
+                href={`tel:${BUSINESS.phoneTel}`}
                 className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all ${
                   isScrolled
                     ? 'bg-primary-600 text-white hover:bg-primary-700'
@@ -73,7 +74,7 @@ export default function Navigation() {
                 }`}
               >
                 <Phone className="w-4 h-4" />
-                (717) 397-3497
+                {BUSINESS.phoneDisplay}
               </a>
             </nav>
 
@@ -103,7 +104,7 @@ export default function Navigation() {
               </a>
             ))}
             <a
-              href="tel:7173973497"
+              href={`tel:${BUSINESS.phoneTel}`}
               className="flex items-center justify-center gap-2 bg-primary-600 text-white py-4 rounded-xl font-semibold mt-4"
             >
               <Phone className="w-5 h-5" />

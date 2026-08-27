@@ -1,0 +1,44 @@
+export const BUSINESS = {
+  name: "Steve's Dealership",
+  shortName: "Steve's",
+  foundedYear: 2007,
+  phoneDisplay: '(717) 397-3497',
+  phoneTel: '7173973497',
+  email: 'stevesdealer@gmail.com',
+  street: '1027 Dillerville Rd #16',
+  city: 'Lancaster',
+  state: 'PA',
+  zip: '17603',
+  country: 'US',
+  addressLine: '1027 Dillerville Rd #16, Lancaster, PA 17603',
+  mapUrl:
+    'https://maps.google.com/?q=1027+Dillerville+Rd+%2316,+Lancaster,+PA+17603',
+  geo: {
+    latitude: '40.0604',
+    longitude: '-76.3233',
+  },
+  hours: [
+    {
+      days: 'Monday–Friday',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '09:00',
+      closes: '19:00',
+      label: '9am–7pm',
+    },
+    {
+      days: 'Saturday',
+      dayOfWeek: ['Saturday'],
+      opens: '10:00',
+      closes: '17:00',
+      label: '10am–5pm',
+    },
+    {
+      days: 'Sunday',
+      dayOfWeek: ['Sunday'],
+      opens: null,
+      closes: null,
+      label: 'Closed',
+    },
+  ],
+  hoursSummary: 'Monday–Friday 9am–7pm, Saturday 10am–5pm, closed Sunday',
+} as const
