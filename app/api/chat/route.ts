@@ -145,14 +145,22 @@ async function answerWithOpenAI(apiKey: string, messages: ChatMessage[], userTex
     history.push({ role: 'user', content: userText })
   }
 
-  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+  const gatewayKey = process.env.AI_GATEWAY_API_KEY?.trim()
+  const viaGateway = Boolean(gatewayKey)
+  const key = gatewayKey || apiKey
+  const baseUrl = viaGateway
+    ? 'https://ai-gateway.vercel.sh/v1'
+    : 'https://api.openai.com/v1'
+  const model = viaGateway ? 'openai/gpt-4o-mini' : 'gpt-4o-mini'
+
+  const res = await fetch(`${baseUrl}/chat/completions`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${apiKey}`,
+      Authorization: `Bearer ${key}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: 'gpt-4o-mini',
+      model,
       temperature: 0.3,
       max_tokens: 400,
       messages: [{ role: 'system', content: systemPrompt() }, ...history],
@@ -160,12 +168,12 @@ async function answerWithOpenAI(apiKey: string, messages: ChatMessage[], userTex
   })
 
   if (!res.ok) {
-    throw new Error(`OpenAI ${res.status}: ${await res.text()}`)
+    throw new Error(`AI ${res.status}: ${await res.text()}`)
   }
 
   const data = await res.json()
   const text = asString(data?.choices?.[0]?.message?.content)
-  if (!text) throw new Error('OpenAI returned empty text')
+  if (!text) throw new Error('AI returned empty text')
   return text
 }
 
@@ -182,14 +190,15 @@ export async function POST(req: Request) {
 
   const messages = parseMessages(body)
   const userText = lastUserText(messages, asString(body.message) || asString(body.text))
-  const apiKey = process.env.OPENAI_API_KEY?.trim()
+  const apiKey =
+    process.env.AI_GATEWAY_API_KEY?.trim() || process.env.OPENAI_API_KEY?.trim()
 
   if (apiKey) {
     try {
       const text = await answerWithOpenAI(apiKey, messages, userText || 'Hello')
       return NextResponse.json({ text })
     } catch (error) {
-      console.error('[chat] OpenAI failed, using inventory fallback', error)
+      console.error('[chat] AI failed, using inventory fallback', error)
     }
   }
 
