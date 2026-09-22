@@ -13,6 +13,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
   }
   body {
     @apply text-gray-900 antialiased;

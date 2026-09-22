@@ -3,3 +3,7 @@ node_modules/
 out/
 *.log
 .vercel
+.env
+.env.local
+data/leads.json
+.grok/builder.lock

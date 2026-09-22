@@ -1,6 +1,7 @@
 'use client'
 
-import { Wrench, Phone, Mail, MapPin, Facebook, Instagram } from 'lucide-react'
+import { Wrench, Phone, Mail, MapPin, Clock, Facebook, Instagram } from 'lucide-react'
+import { BUSINESS } from '@/lib/business'
 
 export default function Footer() {
   return (
@@ -19,8 +20,8 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed mb-4">
-              Quality used cars, trucks, and SUVs at competitive prices. 
-              Serving Lancaster, PA since 2007.
+              Independent used-car lot. Quality cars, trucks, and SUVs at competitive prices.
+              Serving {BUSINESS.city}, {BUSINESS.state} since {BUSINESS.foundedYear}.
             </p>
             <div className="flex gap-3">
               <a href="#" className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-primary-600 transition-colors">
@@ -37,10 +38,12 @@ export default function Footer() {
             <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
             <ul className="space-y-2">
               {[
-                { label: 'Home', href: '#' },
-                { label: 'Inventory', href: '#inventory' },
-                { label: 'Financing', href: '#financing' },
-                { label: 'Contact', href: '#contact' },
+                { label: 'Home', href: '/' },
+                { label: 'Inventory', href: '/#inventory' },
+                { label: 'Financing', href: '/#financing' },
+                { label: 'Trade-In', href: '/#trade-in' },
+                { label: 'About', href: '/#about' },
+                { label: 'Contact', href: '/#contact' },
               ].map((link) => (
                 <li key={link.label}>
                   <a href={link.href} className="text-gray-400 hover:text-primary-400 transition-colors text-sm">
@@ -57,7 +60,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {['Sedans', 'SUVs', 'Trucks', 'Electric', 'Hybrid', 'Luxury'].map((type) => (
                 <li key={type}>
-                  <a href="#inventory" className="text-gray-400 hover:text-primary-400 transition-colors text-sm">
+                  <a href="/#inventory" className="text-gray-400 hover:text-primary-400 transition-colors text-sm">
                     {type}
                   </a>
                 </li>
@@ -71,21 +74,30 @@ export default function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-primary-400 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-400 text-sm">
-                  1027 Dillerville Rd #16<br />
-                  Lancaster, PA 17603
-                </span>
+                <a
+                  href={BUSINESS.mapUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-primary-400 transition-colors text-sm"
+                >
+                  {BUSINESS.street}<br />
+                  {BUSINESS.city}, {BUSINESS.state} {BUSINESS.zip}
+                </a>
+              </li>
+              <li className="flex items-start gap-3">
+                <Clock className="w-5 h-5 text-primary-400 flex-shrink-0 mt-0.5" />
+                <span className="text-gray-400 text-sm">{BUSINESS.hoursSummary}</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-5 h-5 text-primary-400 flex-shrink-0" />
-                <a href="tel:7173973497" className="text-gray-400 hover:text-primary-400 transition-colors text-sm">
-                  (717) 397-3497
+                <a href={`tel:${BUSINESS.phoneTel}`} className="text-gray-400 hover:text-primary-400 transition-colors text-sm">
+                  {BUSINESS.phoneDisplay}
                 </a>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-primary-400 flex-shrink-0" />
-                <a href="mailto:stevesdealer@gmail.com" className="text-gray-400 hover:text-primary-400 transition-colors text-sm">
-                  stevesdealer@gmail.com
+                <a href={`mailto:${BUSINESS.email}`} className="text-gray-400 hover:text-primary-400 transition-colors text-sm">
+                  {BUSINESS.email}
                 </a>
               </li>
             </ul>
@@ -99,6 +111,14 @@ export default function Footer() {
           <p className="text-gray-500 text-sm">
             © {new Date().getFullYear()} Steve's Dealership. All rights reserved.
           </p>
+          <nav className="flex items-center gap-4 text-sm" aria-label="Legal">
+            <a href="/privacy" className="text-gray-500 hover:text-primary-400 transition-colors">
+              Privacy
+            </a>
+            <a href="/terms" className="text-gray-500 hover:text-primary-400 transition-colors">
+              Terms
+            </a>
+          </nav>
           <p className="text-gray-500 text-sm">
             Built by <a href="https://aetherisinnovations.com" target="_blank" rel="noopener noreferrer" className="text-primary-400 hover:text-primary-300 transition-colors">Aetheris Innovations</a> — AI-Powered Business Solutions
           </p>

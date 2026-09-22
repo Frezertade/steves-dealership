@@ -1,23 +1,31 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { BUSINESS } from '@/lib/business'
+import HashScroll from './components/HashScroll'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
+const title = `${BUSINESS.name} | Used Cars in Lancaster, PA`
+const description = `Independent used-car lot at ${BUSINESS.addressLine}. Quality used cars, trucks, SUVs, and hybrids since ${BUSINESS.foundedYear}. Call ${BUSINESS.phoneDisplay}.`
+
 export const metadata: Metadata = {
-  title: "Steve's Dealership | Quality Used Cars in Lancaster, PA",
-  description: "Steve's Dealership offers quality used cars, trucks, SUVs, and hybrids at competitive prices. Serving Lancaster, PA since 2007. Financing available!",
+  metadataBase: new URL(BUSINESS.siteUrl),
+  title,
+  description,
   keywords: 'used cars Lancaster PA, car dealership, buy used car, auto financing, trucks, SUVs, hybrids',
   openGraph: {
-    title: "Steve's Dealership | Quality Used Cars in Lancaster, PA",
-    description: 'Find your perfect vehicle at Steve\'s Dealership. Browse our inventory of quality used cars, trucks, and SUVs.',
+    title,
+    description,
     type: 'website',
     locale: 'en_US',
+    siteName: BUSINESS.name,
+    url: BUSINESS.siteUrl,
   },
   twitter: {
     card: 'summary_large_image',
-    title: "Steve's Dealership",
-    description: 'Quality used cars in Lancaster, PA',
+    title: BUSINESS.name,
+    description,
   },
   robots: {
     index: true,
@@ -32,7 +40,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <HashScroll />
+        {children}
+      </body>
     </html>
   )
 }
